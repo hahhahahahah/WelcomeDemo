@@ -18,6 +18,7 @@ import com.org.zl.welcomedemo.base.BaseWebView;
 public class DaoHangActivity extends BaseActivity {
     private String url = "";
     private BaseWebView webView;
+    private boolean falg = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +31,9 @@ public class DaoHangActivity extends BaseActivity {
         super.onWindowFocusChanged(hasFocus);
 //        setUrl(url4);//设置网页方法
         if(!hasFocus){//如果界面还灭加载完毕
+            return;
+        }
+        if(falg){//如果加载完毕，就不再请求
             return;
         }
         //获取网络是否连接
@@ -55,11 +59,12 @@ public class DaoHangActivity extends BaseActivity {
     }
 
     private void setUrl(String url) {
+        falg = true;//是不是加载完毕
         webView.getWebView().loadUrl(url);//设置加载网页
     }
 
     private void setImg(String url) {
-
+        falg = true;//是不是加载完毕
         Log.e("LOGSe","加载的地址是 :"+url);
         int num = ScreenUtils.getScreenWidth(mContext);//获取屏幕宽度
         Log.e("---------------------","  num = "+num);
@@ -73,6 +78,7 @@ public class DaoHangActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        finish();
         try {
             webView.webDestory();
         } catch (Exception e) {
